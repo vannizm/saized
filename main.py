@@ -1,3 +1,4 @@
+from core.mic import Recorder
 from core.stt import STT
 from core.tts import TTS
 from core.brain import Brain
@@ -9,8 +10,9 @@ class Saized:
         print("Инициализация Сайзеда...")
         self.stt = STT(model_size="small", device="cpu")
         self.tts = TTS(voice_id="1e4176b1-3db9-44d6-a601-4fe68b041942")
-        self.brain = Brain(model_name="qwen2.5:7b")
+        self.brain = Brain()
         self.memory = Memory()
+        self.recorder = Recorder()
         print("Сайзед готов.")
 
     def process_audio(self, audio_path):
@@ -25,14 +27,19 @@ class Saized:
         print(f"Сайзед: {response}")
 
         # 3. Говорим
-        path = self.tts.speak(response)
-        full_path = os.path.abspath(path)
-        print(f"Воспроизвожу: {full_path}")
-        os.startfile(full_path)  # откроет плеер
+        self.tts.speak(response)
 
         # 4. Запоминаем
         self.memory.save(user_text, response)
 
 if __name__ == "__main__":
     agent = Saized()
-    agent.process_audio("audio/test_audio.ogg")
+    print("Говори в микрофон. Ctrl+C — выход.\n")
+    while True:
+        try:
+            path = agent.recorder.record_until_enter()
+            agent.process_audio(path)
+            print()
+        except KeyboardInterrupt:
+            print("\nПока!")
+            break
