@@ -1,0 +1,8 @@
+ollama
+faster-whisper
+soundfile
+numpy
+piper-tts
+playwright
+requests
+sounddevice
