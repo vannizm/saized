@@ -8,7 +8,7 @@ class Saized:
     def __init__(self):
         print("Инициализация Сайзеда...")
         self.stt = STT(model_size="small", device="cpu")
-        self.tts = TTS(voice="ru-RU-DmitryNeural", rate="+30%")
+        self.tts = TTS(voice_id="1e4176b1-3db9-44d6-a601-4fe68b041942")
         self.brain = Brain(model_name="qwen2.5:7b")
         self.memory = Memory()
         print("Сайзед готов.")
